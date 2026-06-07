@@ -7,8 +7,9 @@ project. The central thesis is:
 > matrices reveal dataset geometry.
 
 Traditional self-play is used as a contrastive renewable source. LLM RLVR is
-the main fixed-dataset case. Diffusion-model RL is included only as a brief
-future extension of the same source/geometry lens.
+the main fixed-dataset case. Diffusion VR/RL is included as a reward-channel
+case study showing that richer feedback helps only when it distinguishes
+rollouts and stays aligned with the target evaluator.
 
 The website is a static GitHub Pages site with no build step.
 
@@ -24,6 +25,10 @@ Open `index.html` directly in a browser.
 - 265.5 / 640 realized verifier step-bits.
 - Off-diagonal / diagonal transfer ratio of 0.129.
 - Correct-rollout action entropy shrink from 0.217 to 0.202 nats/token.
+- Diffusion 10-prompt SDXL DDPO active feedback information:
+  IR+PS `I_acc = 0.9335`.
+- Diffusion held-out alignment: PS-only HPSv2 z = `-0.0947`, IR+PS HPSv2
+  z = `-0.0958`.
 
 ## Assets
 

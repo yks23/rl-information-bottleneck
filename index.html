@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Finite Verifier Information and Dataset Geometry in RL</title>
+    <title>RL Information Bottleneck</title>
     <meta
       name="description"
-      content="Academic project page for finite verifier information and dataset geometry in reinforcement learning."
+      content="A compact project page for rollout information budgets in AlphaZero-like RL, LLM math RLVR, and Diffusion VR."
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -14,252 +14,188 @@
     <header class="site-header">
       <a class="brand" href="#top">RL Information Bottleneck</a>
       <nav aria-label="Main navigation">
-        <a href="#claims">Claims</a>
-        <a href="#theory">Theory</a>
         <a href="#evidence">Evidence</a>
-        <a href="#figures">Figures</a>
+        <a href="#geometry">Geometry</a>
+        <a href="#diffusion">Diffusion VR</a>
         <a href="#resources">Resources</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="paper-hero">
-        <p class="kicker">Academic project page</p>
-        <h1>Finite Verifier Information and Dataset Geometry in RL</h1>
-        <p class="subtitle">
-          Why fixed-prompt RLVR saturates, and how transfer matrices reveal prompt interactions.
+      <section class="hero">
+        <p class="kicker">Verifiable reward learning</p>
+        <h1>RL spends information carried by rollouts.</h1>
+        <p class="lead">
+          AlphaZero-like self-play keeps renewing a 50/50 frontier. Fixed LLM
+          math RLVR spends a finite prompt-verifier source. Diffusion VR shows
+          the same constraint in richer, alignment-sensitive reward channels.
         </p>
-        <div class="hero-links" aria-label="Project links">
+        <div class="hero-actions">
+          <a href="#evidence">View evidence</a>
           <a href="assets/rlvr_distributional_shrinkage_poster.pdf">Poster PDF</a>
           <a href="https://github.com/yks23/rl-information-bottleneck">GitHub</a>
-          <a href="#resources">Data tables</a>
         </div>
       </section>
 
-      <section class="abstract-section content-width" aria-labelledby="abstract-title">
-        <h2 id="abstract-title">Abstract</h2>
-        <p>
-          Fixed verifier datasets create a finite source of reward information. In mathematical
-          RLVR, each prompt induces a binary verifier distribution whose local uncertainty is
-          bounded by the prompt success probability. As training moves prompts toward all-correct
-          or all-wrong regimes, useful verifier contrast can saturate. The practical ceiling is
-          even tighter because prompt update directions are not fully aligned: information from one
-          prompt does not automatically improve every other prompt. We therefore study the
-          prompt-transfer matrix as a dataset geometry: it measures which prompts act independently,
-          which prompts transfer, and how additive the dataset is under isolated RL updates.
-        </p>
-      </section>
-
-      <section id="claims" class="content-width section-block" aria-labelledby="claims-title">
-        <h2 id="claims-title">Core Claims</h2>
-        <div class="claim-list">
-          <article>
-            <span>Claim 1</span>
-            <h3>Fixed verifier datasets have finite information.</h3>
-            <p>
-              For binary verifiers, prompt uncertainty is bounded by
-              <code>h2(p_i(t)) <= 1</code> and variance by
-              <code>p_i(t)(1 - p_i(t)) <= 1/4</code>.
-            </p>
-          </article>
-          <article>
-            <span>Claim 2</span>
-            <h3>Weak cross-prompt transfer implies near-additivity.</h3>
-            <p>
-              If off-diagonal transfer is small compared with self-transfer, the dataset behaves
-              like a collection of mostly separate information sources.
-            </p>
-          </article>
-          <article>
-            <span>Claim 3</span>
-            <h3>Transfer matrices define dataset geometry.</h3>
-            <p>
-              Training on source prompt <code>i</code> and evaluating target prompt
-              <code>j</code> gives a directed interaction score that can be embedded, clustered,
-              and used to study coverage.
-            </p>
-          </article>
+      <section class="claim-strip" aria-label="Core formulation">
+        <div>
+          <span>Path exposure</span>
+          <code>P<sub>i</sub> = Σ<sub>t</sub> H<sub>b</sub>(p<sub>i</sub>(t))</code>
+        </div>
+        <div>
+          <span>Useful projection</span>
+          <code>G<sub>i</sub> = Σ<sub>t</sub> H<sub>b</sub>(p<sub>i</sub>(t)) Δp<sub>i</sub><sup>+</sup>(t)</code>
+        </div>
+        <div>
+          <span>Transfer fingerprint</span>
+          <code>T<sub>i</sub> = [ΔP<sub>i1</sub>, ..., ΔP<sub>iN</sub>]</code>
         </div>
       </section>
 
-      <section class="content-width section-block" aria-labelledby="regime-title">
-        <h2 id="regime-title">Three Regimes, Unequal Weight</h2>
-        <div class="regime-grid">
-          <article>
-            <h3>Traditional RL as contrast</h3>
+      <section id="evidence" class="section">
+        <div class="section-head">
+          <p class="kicker">Evidence</p>
+          <h2>Three regimes, one bottleneck.</h2>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="panel">
+            <p class="label teal">AlphaZero-like RL</p>
+            <h3>Renewable frontier</h3>
             <p>
-              AlphaZero-like self-play is a renewable source: the opponent and state distribution
-              co-evolve with the learner. This keeps terminal outcomes near the decision boundary
-              and prevents a fixed question list from being exhausted.
+              Self-play keeps opponents and states near the current policy
+              boundary, so terminal binary rewards can remain locally
+              informative instead of exhausting a fixed question list.
             </p>
+            <dl class="metrics">
+              <div><dt>self-play vs random</dt><dd>0.886</dd></div>
+              <div><dt>self-play vs weak MCTS</dt><dd>0.625</dd></div>
+              <div><dt>shaped vs weak MCTS</dt><dd>0.750</dd></div>
+            </dl>
+            <a class="text-link" href="assets/openspiel_c4_mean_win_rate_by_condition.pdf">
+              Connect Four evidence PDF
+            </a>
           </article>
-          <article class="primary-regime">
-            <h3>LLM RLVR as the main case</h3>
+
+          <article class="panel feature-panel">
+            <p class="label blue">LLM math RLVR</p>
+            <h3>Finite useful middle band</h3>
             <p>
-              Fixed-prompt RLVR uses a non-renewable source. The main questions are how much
-              verifier information is exposed, how much converts into performance, and how prompts
-              interact through directed transfer.
+              Prompts tend to become all-correct or all-wrong. The binary
+              verifier projection is bounded, and off-diagonal transfer is much
+              weaker than self-transfer.
             </p>
+            <dl class="metrics">
+              <div><dt>realized projection</dt><dd>265.5 / 640</dd></div>
+              <div><dt>offdiag / diag</dt><dd>0.129</dd></div>
+              <div><dt>positive transfer cells</dt><dd>608 / 1600</dd></div>
+            </dl>
           </article>
-          <article>
-            <h3>Diffusion RL as a brief extension</h3>
+
+          <article class="panel" id="diffusion">
+            <p class="label green">Diffusion VR</p>
+            <h3>Richer channels still need alignment</h3>
             <p>
-              The same lens can ask whether a diffusion reward source is finite and what geometry
-              should be defined over denoising paths. This is an extension note, not a completed
-              experimental claim.
+              In 10-prompt SDXL DDPO, the hybrid ImageReward+PickScore channel
+              has the highest active feedback diagnostic, but held-out HPSv2 is
+              controlled by reward alignment.
             </p>
+            <dl class="metrics">
+              <div><dt>IR+PS active I<sub>acc</sub></dt><dd>0.9335</dd></div>
+              <div><dt>PS-only HPSv2 z</dt><dd>-0.0947</dd></div>
+              <div><dt>IR+PS HPSv2 z</dt><dd>-0.0958</dd></div>
+            </dl>
           </article>
         </div>
       </section>
 
-      <section id="theory" class="content-width section-block" aria-labelledby="theory-title">
-        <h2 id="theory-title">Theory Sketch</h2>
-        <div class="theory-box">
-          <div>
-            <p class="label">Prompt uncertainty</p>
-            <code>H_i(t) = h2(p_i(t))</code>
-          </div>
-          <div>
-            <p class="label">Verifier variance proxy</p>
-            <code>V_i(t) = p_i(t)(1 - p_i(t))</code>
-          </div>
-          <div>
-            <p class="label">Dataset information exposure</p>
-            <code>A_D = sum_i sum_t H_i(t)</code>
-          </div>
-          <div>
-            <p class="label">Directed prompt transfer</p>
-            <code>T_ij = p_j(after train i) - p_j(base)</code>
-          </div>
+      <section id="geometry" class="section split-section">
+        <div class="section-copy">
+          <p class="kicker">Dataset geometry</p>
+          <h2>RL sharpens a broad distribution into problem seeds.</h2>
+          <p>
+            Train on source prompt <code>i</code>, evaluate target prompt
+            <code>j</code>, and the directed transfer matrix becomes a map of
+            dataset distance. Strong diagonal dominance means most information
+            remains prompt-local; sparse off-diagonal edges reveal reusable
+            skills and curriculum anchors.
+          </p>
+          <ul class="clean-list">
+            <li><strong>2D</strong> explains 48.3% of transfer variance.</li>
+            <li><strong>16D</strong> explains 95.3% of transfer variance.</li>
+            <li><strong>42</strong> endpoint cells are significant.</li>
+          </ul>
         </div>
-        <p class="theory-note">
-          The information bound alone is not the whole story. Prompt directions can disagree, so
-          joint training cannot generally realize the sum of all prompt-wise ceilings. The transfer
-          matrix measures this geometry directly.
-        </p>
-      </section>
-
-      <section id="evidence" class="content-width section-block" aria-labelledby="evidence-title">
-        <h2 id="evidence-title">Empirical Evidence</h2>
-        <div class="result-grid">
-          <article>
-            <strong>265.5 / 640</strong>
-            <span>realized verifier step-bits</span>
-          </article>
-          <article>
-            <strong>40 x 40</strong>
-            <span>directed transfer matrix</span>
-          </article>
-          <article>
-            <strong>0.129</strong>
-            <span>off-diagonal / diagonal transfer</span>
-          </article>
-          <article>
-            <strong>608 / 1600</strong>
-            <span>positive transfer cells</span>
-          </article>
-          <article>
-            <strong>42</strong>
-            <span>significant transfer cells</span>
-          </article>
-          <article>
-            <strong>0.217 -> 0.202</strong>
-            <span>correct-rollout action entropy</span>
-          </article>
-        </div>
-      </section>
-
-      <section id="figures" class="content-width section-block" aria-labelledby="figures-title">
-        <h2 id="figures-title">Figures</h2>
-        <div class="figure-list">
-          <figure>
-            <img
-              src="assets/geometry40_info_budget_vs_self_gain.png"
-              alt="Information budget versus self performance gain"
-            />
-            <figcaption>
-              <strong>Figure 1.</strong> Cumulative verifier uncertainty versus self performance
-              gain. The plot separates exposure to bounded verifier information from the amount of
-              performance improvement it produces.
-            </figcaption>
-          </figure>
-
-          <figure>
-            <img
-              src="assets/geometry40_diag_vs_offdiag_transfer_histogram.png"
-              alt="Histogram of diagonal and off-diagonal transfer"
-            />
-            <figcaption>
-              <strong>Figure 2.</strong> Self-transfer dominates cross-prompt transfer. The mean
-              off-diagonal to diagonal transfer ratio is 0.129, supporting a near-additive dataset
-              view.
-            </figcaption>
-          </figure>
-
-          <figure>
-            <img
-              src="assets/geometry40_cluster_heatmap.png"
-              alt="Clustered prompt transfer heatmap"
-            />
-            <figcaption>
-              <strong>Figure 3.</strong> The 40 x 40 directed transfer matrix acts as a local
-              geometry over prompts, exposing sparse blocks and asymmetric transfer.
-            </figcaption>
-          </figure>
-
-          <figure>
-            <img
-              src="assets/geometry40_correct_rollout_action_entropy_trajectories.png"
-              alt="Correct-rollout action entropy trajectories"
-            />
-            <figcaption>
-              <strong>Figure 4.</strong> Correct-rollout action entropy decreases from 0.217 to
-              0.202 nats/token, consistent with successful trajectories becoming sharper under
-              RLVR.
-            </figcaption>
-          </figure>
-
+        <div class="figure-pair">
           <figure>
             <img
               src="assets/geometry40_seed_geometry_sharpness_embedding.png"
-              alt="Prompt seed embedding by transfer fingerprints"
+              alt="Prompt seeds embedded by transfer fingerprints"
             />
-            <figcaption>
-              <strong>Figure 5.</strong> Prompt seeds embedded by transfer fingerprints. This is a
-              low-dimensional view of dataset geometry rather than a semantic embedding of problem
-              statements.
-            </figcaption>
+            <figcaption>Prompt seeds embedded by transfer fingerprints.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/geometry40_cluster_heatmap.png"
+              alt="Cluster-sorted directed transfer matrix"
+            />
+            <figcaption>Clustered directed transfer matrix.</figcaption>
           </figure>
         </div>
       </section>
 
-      <section class="content-width section-block" aria-labelledby="contrast-title">
-        <h2 id="contrast-title">Traditional RL Contrast</h2>
+      <section class="section figure-section">
+        <div class="section-head">
+          <p class="kicker">Key plots</p>
+          <h2>Compact evidence set.</h2>
+        </div>
+        <div class="figure-grid">
+          <figure>
+            <img
+              src="assets/geometry40_info_budget_vs_self_gain.png"
+              alt="Information budget versus self gain"
+            />
+            <figcaption>LLM RLVR: verifier projection versus self gain.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/geometry40_diag_vs_offdiag_transfer_histogram.png"
+              alt="Diagonal and off-diagonal transfer histogram"
+            />
+            <figcaption>LLM RLVR: self-transfer dominates cross-transfer.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/diffusion_final_active_channel_information.png"
+              alt="Diffusion active feedback information"
+            />
+            <figcaption>Diffusion VR: active feedback information by channel.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/diffusion_cross_reward_matrix_final_z.png"
+              alt="Diffusion final cross-reward matrix"
+            />
+            <figcaption>Diffusion VR: cross-reward alignment matrix.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="takeaway">
+        <p class="kicker">Design implication</p>
+        <h2>To make LLM math RL more AlphaZero-like, renew the frontier.</h2>
         <p>
-          Self-play is the cleanest contrast to fixed-prompt RLVR. A terminal verifier can still be
-          sparse and binary, but the source is renewable because the opponent and state distribution
-          move with the current policy. This can keep reward variance close to the competence
-          boundary rather than exhausting a fixed set of prompts.
-        </p>
-        <p>
-          <a href="assets/openspiel_c4_mean_win_rate_by_condition.pdf">
-            Connect Four evidence PDF
-          </a>
+          Allocate rollouts to high-information prompts, generate new variants,
+          use dense or process feedback where it is aligned, and use transfer
+          geometry to avoid redundant data.
         </p>
       </section>
 
-      <section id="diffusion" class="content-width section-block compact-note" aria-labelledby="diffusion-title">
-        <h2 id="diffusion-title">Diffusion RL Note</h2>
-        <p>
-          Diffusion RL can be analyzed with the same source-and-geometry lens. The open problem is
-          defining finite information and transfer geometry over denoising trajectories: which
-          reward differences are aligned with controllable path directions, and when does the reward
-          source saturate?
-        </p>
-      </section>
-
-      <section id="resources" class="content-width section-block" aria-labelledby="resources-title">
-        <h2 id="resources-title">Resources</h2>
+      <section id="resources" class="section resources">
+        <div>
+          <p class="kicker">Resources</p>
+          <h2>Files</h2>
+        </div>
         <div class="resource-grid">
           <a href="assets/rlvr_distributional_shrinkage_poster.pdf">
             <span>Poster</span>
@@ -286,7 +222,7 @@
     </main>
 
     <footer class="site-footer">
-      <span>Finite Verifier Information and Dataset Geometry in RL</span>
+      <span>RL Information Bottleneck</span>
       <span>Static academic project page</span>
     </footer>
   </body>
