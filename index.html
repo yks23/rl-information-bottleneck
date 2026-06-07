@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RL Information Bottleneck</title>
+    <meta
+      name="description"
+      content="A visual academic overview of information bottlenecks in traditional RL, LLM RLVR, and diffusion-model RL."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top">RL Information Bottleneck</a>
+      <nav aria-label="Main navigation">
+        <a href="#traditional">Traditional RL</a>
+        <a href="#llmrl">LLM RLVR</a>
+        <a href="#diffusion">Diffusion RL</a>
+        <a href="#evidence">Evidence</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="Project overview">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Verifier information, dataset geometry, and reward renewal</p>
+          <h1>RL Information Bottleneck</h1>
+          <p class="thesis">
+            Self-play renews verifier information; fixed-prompt LLM RLVR spends a finite
+            verifier source; prompt-transfer geometry reveals how much of the dataset acts
+            independently.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="assets/rlvr_distributional_shrinkage_poster.pdf">Poster PDF</a>
+            <a class="button secondary" href="#evidence">View evidence</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics-strip" aria-label="Key numbers">
+        <article>
+          <strong>40x40</strong>
+          <span>source-target transfer matrix</span>
+        </article>
+        <article>
+          <strong>608 / 1600</strong>
+          <span>positive transfer cells</span>
+        </article>
+        <article>
+          <strong>42</strong>
+          <span>significant cells</span>
+        </article>
+        <article>
+          <strong>0.129</strong>
+          <span>offdiag / diag transfer ratio</span>
+        </article>
+      </section>
+
+      <section class="framing section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Core lens</p>
+          <h2>Verifier rewards are not just sparse. They are sources with different renewal laws.</h2>
+        </div>
+        <div class="framework-grid">
+          <article class="framework-card">
+            <span class="tag green">renewable</span>
+            <h3>Traditional self-play</h3>
+            <p>
+              The opponent and state distribution move with the learner. Terminal rewards can stay
+              close to the decision boundary, so outcome variance remains useful.
+            </p>
+            <p class="formula">V_sp(t) = p_t(1 - p_t) ~= 1/4</p>
+          </article>
+          <article class="framework-card">
+            <span class="tag red">finite source</span>
+            <h3>Fixed-dataset LLM RLVR</h3>
+            <p>
+              The prompt set is fixed. Easy prompts become all-correct, hard prompts remain
+              all-wrong, and only the middle band provides contrast.
+            </p>
+            <p class="formula">V_i(t) = p_i(t)(1 - p_i(t)) <= 1/4</p>
+          </article>
+          <article class="framework-card">
+            <span class="tag blue">extension</span>
+            <h3>Diffusion-model RL</h3>
+            <p>
+              Diffusion RL can be viewed through the same source-and-allocation lens, but the
+              current paper treats it as an early-stage extension rather than a finished result.
+            </p>
+            <p class="formula">usable signal = reward variation aligned with controllable paths</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="traditional" class="mode-section traditional section-pad">
+        <div class="mode-copy">
+          <p class="eyebrow">1. Traditional RL</p>
+          <h2>Self-play is a renewable verifier source.</h2>
+          <p>
+            AlphaZero-like systems learn from sparse terminal rewards, but the task distribution is
+            not fixed. Self-play keeps generating contested states against a policy of comparable
+            strength. The reward channel remains binary, while the source keeps refreshing.
+          </p>
+          <ul class="compact-list">
+            <li>The same learner supplies both actor and moving opponent.</li>
+            <li>Absolute strength can improve while self-play win rate stays near balanced.</li>
+            <li>The information integral can grow with generated games and update budget.</li>
+          </ul>
+        </div>
+        <a class="figure-link pdf-card" href="assets/openspiel_c4_mean_win_rate_by_condition.pdf">
+          <span>Connect Four evidence</span>
+          <strong>Open PDF figure</strong>
+        </a>
+      </section>
+
+      <section id="llmrl" class="mode-section llmrl section-pad">
+        <div class="mode-copy">
+          <p class="eyebrow">2. LLM RLVR</p>
+          <h2>Fixed-prompt RLVR spends a bounded verifier budget.</h2>
+          <p>
+            For a fixed mathematical prompt set, a deterministic verifier creates Bernoulli
+            feedback per prompt. The useful contrast is bounded by the finite set of prompts and
+            their current success probabilities.
+          </p>
+          <ul class="compact-list">
+            <li>All-failure and all-success groups both provide weak policy-gradient contrast.</li>
+            <li>Training is most informative near p_i(t) ~= 1/2.</li>
+            <li>Prompt allocation and transfer geometry determine how efficiently the source is used.</li>
+          </ul>
+        </div>
+        <figure class="image-panel">
+          <img src="assets/geometry40_self_gain_by_problem.png" alt="Per-problem self performance gain after isolated RL" />
+          <figcaption>Per-problem self gain after isolated LLM RLVR.</figcaption>
+        </figure>
+      </section>
+
+      <section id="diffusion" class="mode-section diffusion section-pad">
+        <div class="mode-copy">
+          <p class="eyebrow">3. Diffusion RL</p>
+          <h2>A parallel frontier for verifiable generation.</h2>
+          <p>
+            The current manuscript keeps diffusion RL as a future extension. The same bottleneck
+            question applies: does the reward source create fresh, controllable contrast across
+            generated paths, or does it saturate like a fixed verifier dataset?
+          </p>
+          <ul class="compact-list">
+            <li>Binary or scalar rewards can supervise generated samples.</li>
+            <li>The key object is path-level reward variation, not raw reward noise.</li>
+            <li>The open question is how to renew useful variation as the generator improves.</li>
+          </ul>
+        </div>
+        <div class="idea-panel">
+          <h3>Working hypothesis</h3>
+          <p>
+            Diffusion RL should be analyzed by the geometry of denoising paths and by whether
+            reward differences align with controllable generation directions.
+          </p>
+        </div>
+      </section>
+
+      <section id="evidence" class="evidence section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Empirical geometry</p>
+          <h2>Fixed-prompt RLVR is mostly additive, with sparse directed transfer.</h2>
+          <p>
+            The 40-problem Qwen2.5-7B pilot trains on one source prompt at a time and evaluates a
+            shared target basis. The resulting transfer matrix sketches the dataset's local geometry.
+          </p>
+        </div>
+
+        <div class="evidence-grid">
+          <figure class="image-panel wide">
+            <img src="assets/geometry40_diag_vs_offdiag_transfer_histogram.png" alt="Histogram comparing diagonal and off-diagonal transfer" />
+            <figcaption>Self gains dominate cross-prompt gains: offdiag / diag = 0.129.</figcaption>
+          </figure>
+          <figure class="image-panel wide">
+            <img src="assets/geometry40_cluster_heatmap.png" alt="Clustered heatmap of prompt transfer matrix" />
+            <figcaption>Transfer heatmap exposes sparse blocks and directed asymmetry.</figcaption>
+          </figure>
+          <figure class="image-panel wide">
+            <img src="assets/geometry40_correct_rollout_action_entropy_trajectories.png" alt="Correct rollout action entropy trajectories" />
+            <figcaption>Correct-rollout action entropy shrinks from 0.217 to 0.202 nats/token.</figcaption>
+          </figure>
+          <figure class="image-panel wide">
+            <img src="assets/geometry40_seed_geometry_sharpness_embedding.png" alt="Prompt seed embedding by transfer fingerprints" />
+            <figcaption>Prompt seeds embedded by transfer fingerprints; color shows entropy shrink.</figcaption>
+          </figure>
+        </div>
+
+        <div class="poster-callout">
+          <img src="assets/rlvr_distributional_shrinkage_poster.png" alt="RLVR as distributional shrinkage poster" />
+          <div>
+            <p class="eyebrow">Poster summary</p>
+            <h2>RLVR as distributional shrinkage</h2>
+            <p>
+              Bounded verifier information drives policy updates. Rollout action entropy shrinks
+              into problem-conditioned seeds. Cross-prompt transfer defines the geometry between
+              those seeds.
+            </p>
+            <a class="button primary" href="assets/rlvr_distributional_shrinkage_poster.pdf">Download poster PDF</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="conclusion">
+        <p>
+          Self-play renews information; fixed-prompt RLVR spends it; geometry shows how prompts
+          interact.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>RL Information Bottleneck</span>
+      <div>
+        <a href="assets/geometry40_self_gain_by_problem.csv">Self-gain CSV</a>
+        <a href="assets/geometry40_transfer_out_by_source.csv">Transfer-out CSV</a>
+        <a href="assets/geometry40_transfer_in_by_target.csv">Transfer-in CSV</a>
+      </div>
+    </footer>
+  </body>
+</html>
