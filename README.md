@@ -1,11 +1,14 @@
 # RL Information Bottleneck
 
-This repository hosts a visual academic website for the RL information-bottleneck
-project. The site compares three reward-information regimes:
+This repository hosts an academic project website for the RL information-bottleneck
+project. The central thesis is:
 
-- Traditional RL / self-play: a renewable verifier source.
-- LLM RLVR: a fixed-prompt, finite verifier source.
-- Diffusion-model RL: an early-stage extension of the same source/allocation view.
+> Fixed verifier datasets provide finite information, and prompt-transfer
+> matrices reveal dataset geometry.
+
+Traditional self-play is used as a contrastive renewable source. LLM RLVR is
+the main fixed-dataset case. Diffusion-model RL is included only as a brief
+future extension of the same source/geometry lens.
 
 The website is a static GitHub Pages site with no build step.
 
