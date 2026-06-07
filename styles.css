@@ -342,6 +342,31 @@ figcaption {
   color: #fca5a5;
 }
 
+.frontier-note {
+  margin-top: 18px;
+  padding: 32px;
+  border: 1px solid #cdd7e5;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(36, 88, 211, 0.06), rgba(255, 255, 255, 0)),
+    #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.frontier-note h2 {
+  max-width: 760px;
+}
+
+.frontier-note p:not(.kicker) {
+  max-width: 920px;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.frontier-note p:last-child {
+  margin-bottom: 0;
+}
+
 .resources {
   display: grid;
   grid-template-columns: 0.35fr 1fr;
