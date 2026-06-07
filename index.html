@@ -6,102 +6,166 @@
     <title>RL Information Bottleneck</title>
     <meta
       name="description"
-      content="A compact project page for rollout information budgets in AlphaZero-like RL, LLM math RLVR, and Diffusion VR."
+      content="A public project page for rollout information budgets, LLM math RLVR, transfer geometry, and Diffusion VR."
     />
+    <script>
+      document.documentElement.classList.add("reveal-ready");
+    </script>
     <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top">RL Information Bottleneck</a>
+      <a class="brand" href="#top" aria-label="RL Information Bottleneck home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>RL Information Bottleneck</span>
+      </a>
       <nav aria-label="Main navigation">
+        <a href="#thesis">Thesis</a>
         <a href="#evidence">Evidence</a>
         <a href="#geometry">Geometry</a>
-        <a href="#diffusion">Diffusion VR</a>
-        <a href="#resources">Resources</a>
+        <a href="#showcase">Showcase</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero">
-        <p class="kicker">Verifiable reward learning</p>
-        <h1>RL spends information carried by rollouts.</h1>
-        <p class="lead">
-          AlphaZero-like self-play keeps renewing a 50/50 frontier. Fixed LLM
-          math RLVR spends a finite prompt-verifier source. Diffusion VR shows
-          the same constraint in richer, alignment-sensitive reward channels.
-        </p>
-        <div class="hero-actions">
-          <a href="#evidence">View evidence</a>
-          <a href="assets/rlvr_distributional_shrinkage_poster.pdf">Poster PDF</a>
-          <a href="https://github.com/yks23/rl-information-bottleneck">GitHub</a>
+        <div class="hero-copy" data-reveal>
+          <p class="kicker">Verifiable reward learning</p>
+          <h1>RL improves only where rollouts still carry information.</h1>
+          <p class="lead">
+            AlphaZero keeps a renewable 50/50 frontier. LLM math RLVR often
+            spends a fixed prompt-verifier source until questions become
+            all-right or all-wrong. The useful middle is the scarce resource.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#evidence">Read the evidence</a>
+            <a class="button" href="assets/rlvr_distributional_shrinkage_poster.pdf">
+              Poster PDF
+            </a>
+            <a class="button" href="https://github.com/yks23/rl-information-bottleneck">
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-reveal>
+          <div class="frontier-card" aria-label="Information frontier sketch">
+            <svg class="frontier-svg" viewBox="0 0 560 420" role="img">
+              <title>Renewable frontier versus finite prompt information</title>
+              <defs>
+                <marker
+                  id="arrow"
+                  viewBox="0 0 10 10"
+                  refX="8"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+              </defs>
+              <line class="axis" x1="58" y1="342" x2="508" y2="342"></line>
+              <line class="axis" x1="58" y1="342" x2="58" y2="56"></line>
+              <text x="70" y="72">information rate</text>
+              <text x="430" y="382">training time</text>
+              <path
+                class="renewable-line"
+                marker-end="url(#arrow)"
+                d="M 70 174 C 132 88, 188 262, 250 174 S 366 88, 438 174 S 508 254, 522 174"
+              ></path>
+              <path
+                class="finite-line"
+                d="M 70 134 C 156 144, 178 224, 214 276 C 254 334, 354 348, 512 348"
+              ></path>
+              <g class="frontier-dots">
+                <circle cx="98" cy="150" r="8"></circle>
+                <circle cx="198" cy="238" r="8"></circle>
+                <circle cx="300" cy="132" r="8"></circle>
+                <circle cx="408" cy="202" r="8"></circle>
+              </g>
+              <g class="seed-dots">
+                <circle cx="242" cy="306" r="5"></circle>
+                <circle cx="296" cy="324" r="5"></circle>
+                <circle cx="350" cy="334" r="5"></circle>
+                <circle cx="426" cy="340" r="5"></circle>
+              </g>
+              <text class="label-text renewable" x="320" y="116">self-play renews the frontier</text>
+              <text class="label-text finite" x="245" y="292">fixed prompts collapse into seeds</text>
+            </svg>
+          </div>
         </div>
       </section>
 
-      <section class="claim-strip" aria-label="Core formulation">
-        <div>
-          <span>Path exposure</span>
-          <code>P<sub>i</sub> = Σ<sub>t</sub> H<sub>b</sub>(p<sub>i</sub>(t))</code>
+      <section id="thesis" class="thesis-band" data-reveal>
+        <div class="thesis-copy">
+          <p class="kicker">Core claim</p>
+          <h2>Bounded verifier information explains why math RL is not AlphaZero.</h2>
         </div>
-        <div>
-          <span>Useful projection</span>
-          <code>G<sub>i</sub> = Σ<sub>t</sub> H<sub>b</sub>(p<sub>i</sub>(t)) Δp<sub>i</sub><sup>+</sup>(t)</code>
-        </div>
-        <div>
-          <span>Transfer fingerprint</span>
-          <code>T<sub>i</sub> = [ΔP<sub>i1</sub>, ..., ΔP<sub>iN</sub>]</code>
+        <div class="formula-row" aria-label="Core formulas">
+          <div>
+            <span>Rollout information</span>
+            <code>I_i = Σ_t H_b(p_i(t))</code>
+          </div>
+          <div>
+            <span>Useful projection</span>
+            <code>G_i = Σ_t H_b(p_i(t)) Δp_i^+(t)</code>
+          </div>
+          <div>
+            <span>Transfer fingerprint</span>
+            <code>T_i = [ΔP_i1, ..., ΔP_iN]</code>
+          </div>
         </div>
       </section>
 
       <section id="evidence" class="section">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="kicker">Evidence</p>
-          <h2>Three regimes, one bottleneck.</h2>
+          <h2>Three regimes, one question: where does useful information come from?</h2>
         </div>
 
-        <div class="evidence-grid">
-          <article class="panel">
-            <p class="label teal">AlphaZero-like RL</p>
-            <h3>Renewable frontier</h3>
+        <div class="regime-grid">
+          <article class="regime-card" data-reveal>
+            <p class="label green">AlphaZero-like RL</p>
+            <h3>Renewable opponent, renewable bits.</h3>
             <p>
-              Self-play keeps opponents and states near the current policy
-              boundary, so terminal binary rewards can remain locally
-              informative instead of exhausting a fixed question list.
+              Self-play continually manufactures near-boundary states. The
+              binary outcome can stay informative because the opponent keeps
+              moving with the policy.
             </p>
             <dl class="metrics">
-              <div><dt>self-play vs random</dt><dd>0.886</dd></div>
-              <div><dt>self-play vs weak MCTS</dt><dd>0.625</dd></div>
-              <div><dt>shaped vs weak MCTS</dt><dd>0.750</dd></div>
+              <div><dt>self-play vs random</dt><dd data-count="0.886">0.886</dd></div>
+              <div><dt>self-play vs weak MCTS</dt><dd data-count="0.625">0.625</dd></div>
+              <div><dt>shaped vs weak MCTS</dt><dd data-count="0.750">0.750</dd></div>
             </dl>
-            <a class="text-link" href="assets/openspiel_c4_mean_win_rate_by_condition.pdf">
-              Connect Four evidence PDF
-            </a>
           </article>
 
-          <article class="panel feature-panel">
+          <article class="regime-card feature-card" data-reveal>
             <p class="label blue">LLM math RLVR</p>
-            <h3>Finite useful middle band</h3>
+            <h3>Finite middle band, sparse transfer.</h3>
             <p>
-              Prompts tend to become all-correct or all-wrong. The binary
-              verifier projection is bounded, and off-diagonal transfer is much
-              weaker than self-transfer.
+              Math prompts tend to saturate: too easy, too hard, or briefly in
+              the useful middle. Across prompts, gains are mostly local rather
+              than freely shared.
             </p>
             <dl class="metrics">
               <div><dt>realized projection</dt><dd>265.5 / 640</dd></div>
-              <div><dt>offdiag / diag</dt><dd>0.129</dd></div>
-              <div><dt>positive transfer cells</dt><dd>608 / 1600</dd></div>
+              <div><dt>offdiag / diag</dt><dd data-count="0.129">0.129</dd></div>
+              <div><dt>positive cells</dt><dd>608 / 1600</dd></div>
             </dl>
           </article>
 
-          <article class="panel" id="diffusion">
-            <p class="label green">Diffusion VR</p>
-            <h3>Richer channels still need alignment</h3>
+          <article class="regime-card" id="diffusion" data-reveal>
+            <p class="label plum">Diffusion VR</p>
+            <h3>Richer rewards help only when aligned.</h3>
             <p>
-              In 10-prompt SDXL DDPO, the hybrid ImageReward+PickScore channel
-              has the highest active feedback diagnostic, but held-out HPSv2 is
-              controlled by reward alignment.
+              Diffusion experiments expose a wider reward channel, but the same
+              principle holds: feedback must distinguish rollouts and point
+              toward the evaluator we care about.
             </p>
             <dl class="metrics">
-              <div><dt>IR+PS active I<sub>acc</sub></dt><dd>0.9335</dd></div>
+              <div><dt>IR+PS active I<sub>acc</sub></dt><dd data-count="0.9335">0.9335</dd></div>
               <div><dt>PS-only HPSv2 z</dt><dd>-0.0947</dd></div>
               <div><dt>IR+PS HPSv2 z</dt><dd>-0.0958</dd></div>
             </dl>
@@ -109,69 +173,99 @@
         </div>
       </section>
 
-      <section id="geometry" class="section split-section">
-        <div class="section-copy">
-          <p class="kicker">Dataset geometry</p>
-          <h2>RL sharpens a broad distribution into problem seeds.</h2>
+      <section class="section split-section">
+        <div class="section-copy" data-reveal>
+          <p class="kicker">Bounded information</p>
+          <h2>Each prompt has a small window where the verifier is alive.</h2>
           <p>
-            Train on source prompt <code>i</code>, evaluate target prompt
-            <code>j</code>, and the directed transfer matrix becomes a map of
-            dataset distance. Strong diagonal dominance means most information
-            remains prompt-local; sparse off-diagonal edges reveal reusable
-            skills and curriculum anchors.
+            The action-entropy shrinkage view is deliberately simple: rollouts
+            begin as a broad distribution and training sharpens them. Once a
+            prompt is solved or hopeless under the current setup, its binary
+            verifier contributes little new information.
           </p>
-          <ul class="clean-list">
-            <li><strong>2D</strong> explains 48.3% of transfer variance.</li>
-            <li><strong>16D</strong> explains 95.3% of transfer variance.</li>
-            <li><strong>42</strong> endpoint cells are significant.</li>
-          </ul>
+          <p>
+            That is why adding prompts matters, but not perfectly. Dataset
+            information is near-additive when prompts barely interact; it is
+            sub-additive when transfer directions collide or duplicate each
+            other.
+          </p>
         </div>
-        <div class="figure-pair">
-          <figure>
+        <figure class="large-figure" data-reveal>
+          <img
+            src="assets/geometry40_correct_rollout_action_entropy_trajectories.png"
+            alt="Action entropy trajectories for correct rollouts"
+          />
+          <figcaption>
+            Action entropy shrinkage on the same rollout slice: the distribution narrows as
+            successful behavior sharpens.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="geometry" class="section geometry-section">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Dataset geometry</p>
+          <h2>Train on A, measure B, and the dataset becomes a directed space.</h2>
+          <p>
+            The transfer matrix is not just a score table. It is a map of which
+            prompts sharpen the same seeds, which ones are redundant, and which
+            ones form rare bridges.
+          </p>
+        </div>
+        <div class="geometry-layout">
+          <figure data-reveal>
             <img
               src="assets/geometry40_seed_geometry_sharpness_embedding.png"
               alt="Prompt seeds embedded by transfer fingerprints"
             />
-            <figcaption>Prompt seeds embedded by transfer fingerprints.</figcaption>
+            <figcaption>Transfer fingerprints embedded as prompt seeds.</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img
               src="assets/geometry40_cluster_heatmap.png"
               alt="Cluster-sorted directed transfer matrix"
             />
-            <figcaption>Clustered directed transfer matrix.</figcaption>
+            <figcaption>Cluster-sorted directed transfer matrix.</figcaption>
           </figure>
+          <aside class="geometry-notes" data-reveal>
+            <span class="note-number">48.3%</span>
+            <p>of transfer variance captured in 2D.</p>
+            <span class="note-number">95.3%</span>
+            <p>captured in 16D.</p>
+            <span class="note-number">42</span>
+            <p>significant endpoint transfer cells.</p>
+          </aside>
         </div>
       </section>
 
       <section class="section figure-section">
-        <div class="section-head">
-          <p class="kicker">Key plots</p>
-          <h2>Compact evidence set.</h2>
+        <div class="section-head" data-reveal>
+          <p class="kicker">Compact evidence</p>
+          <h2>The public figures behind the story.</h2>
         </div>
         <div class="figure-grid">
-          <figure>
+          <figure data-reveal>
             <img
               src="assets/geometry40_info_budget_vs_self_gain.png"
               alt="Information budget versus self gain"
             />
-            <figcaption>LLM RLVR: verifier projection versus self gain.</figcaption>
+            <figcaption>LLM RLVR: rollout information budget versus self gain.</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img
               src="assets/geometry40_diag_vs_offdiag_transfer_histogram.png"
               alt="Diagonal and off-diagonal transfer histogram"
             />
-            <figcaption>LLM RLVR: self-transfer dominates cross-transfer.</figcaption>
+            <figcaption>LLM RLVR: diagonal transfer dominates off-diagonal transfer.</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img
               src="assets/diffusion_final_active_channel_information.png"
               alt="Diffusion active feedback information"
             />
-            <figcaption>Diffusion VR: active feedback information by channel.</figcaption>
+            <figcaption>Diffusion VR: active feedback information by reward channel.</figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img
               src="assets/diffusion_cross_reward_matrix_final_z.png"
               alt="Diffusion final cross-reward matrix"
@@ -181,62 +275,59 @@
         </div>
       </section>
 
-      <section class="takeaway">
-        <p class="kicker">Design implication</p>
-        <h2>To make LLM math RL more AlphaZero-like, renew the frontier.</h2>
+      <section class="punchline" data-reveal>
+        <p class="kicker">The fun part</p>
+        <h2>Why does math RL still improve today?</h2>
         <p>
-          Allocate rollouts to high-information prompts, generate new variants,
-          use dense or process feedback where it is aligned, and use transfer
-          geometry to avoid redundant data.
+          Because frontier labs are collectively playing the role of the
+          missing AlphaZero opponent. Researchers, annotators, eval builders,
+          data miners, contest problems, synthetic generators, and new model
+          releases keep pushing a harder frontier back at the model.
+        </p>
+        <p>
+          It works, but it is a very expensive imitation of self-play. As
+          models get stronger, humans alone cannot supply enough fresh,
+          well-verified, sharply targeted failures. The endpoint is AI systems
+          that generate, verify, and organize their own next frontier.
         </p>
       </section>
 
-      <section class="frontier-note" aria-labelledby="frontier-title">
-        <p class="kicker">A useful way to say it</p>
-        <h2 id="frontier-title">Why does math RL still improve today?</h2>
-        <p>
-          Because the post-training teams at frontier labs are, collectively,
-          acting like the missing AlphaZero opponent. Human researchers,
-          annotators, eval builders, data miners, contest problems, synthetic
-          generators, and repeated model releases create a costly artificial
-          self-play loop: every time the model gets stronger, the surrounding
-          organization pushes a harder frontier back at it.
-        </p>
-        <p>
-          This works, but it is an expensive simulation of a renewable
-          environment. As models improve, the frontier requires more tasks, more
-          evaluators, and more precisely targeted failures than humans alone can
-          supply. The natural endpoint is not just better human curation; it is
-          AI systems that generate, verify, and organize their own next
-          frontier.
-        </p>
-      </section>
-
-      <section id="resources" class="section resources">
-        <div>
-          <p class="kicker">Resources</p>
-          <h2>Files</h2>
+      <section id="showcase" class="section showcase-section">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Showcase</p>
+          <h2>Public-facing materials only.</h2>
+          <p>
+            These are the artifacts meant to be shared: the poster, the visual
+            abstract, the small game-control evidence, and the source for this
+            page. Internal tables stay off the showcase row.
+          </p>
         </div>
-        <div class="resource-grid">
-          <a href="assets/rlvr_distributional_shrinkage_poster.pdf">
-            <span>Poster</span>
+        <div class="showcase-row">
+          <a class="showcase-card poster-card" href="assets/rlvr_distributional_shrinkage_poster.pdf" data-reveal>
+            <img
+              src="assets/rlvr_distributional_shrinkage_poster.png"
+              alt="RLVR as Distributional Shrinkage poster preview"
+            />
+            <span>Poster PDF</span>
             <strong>RLVR as Distributional Shrinkage</strong>
           </a>
-          <a href="assets/geometry40_self_gain_by_problem.csv">
-            <span>CSV</span>
-            <strong>Per-problem self gain</strong>
+          <a class="showcase-card" href="assets/geometry40_seed_geometry_sharpness_embedding.png" data-reveal>
+            <img
+              src="assets/geometry40_seed_geometry_sharpness_embedding.png"
+              alt="Prompt transfer seed geometry preview"
+            />
+            <span>Geometry figure</span>
+            <strong>Prompt transfer as a seed space</strong>
           </a>
-          <a href="assets/geometry40_transfer_out_by_source.csv">
-            <span>CSV</span>
-            <strong>Transfer out by source</strong>
+          <a class="showcase-card" href="assets/openspiel_c4_mean_win_rate_by_condition.pdf" data-reveal>
+            <div class="document-tile" aria-hidden="true">C4</div>
+            <span>Control evidence</span>
+            <strong>Connect Four AlphaZero-like baseline</strong>
           </a>
-          <a href="assets/geometry40_transfer_in_by_target.csv">
-            <span>CSV</span>
-            <strong>Transfer in by target</strong>
-          </a>
-          <a href="https://github.com/yks23/rl-information-bottleneck">
+          <a class="showcase-card" href="https://github.com/yks23/rl-information-bottleneck" data-reveal>
+            <div class="document-tile repo-tile" aria-hidden="true">GH</div>
             <span>Repository</span>
-            <strong>Website and selected assets</strong>
+            <strong>Website and selected public assets</strong>
           </a>
         </div>
       </section>
@@ -244,7 +335,7 @@
 
     <footer class="site-footer">
       <span>RL Information Bottleneck</span>
-      <span>Static academic project page</span>
+      <span>Rollout information, transfer geometry, and renewable frontiers</span>
     </footer>
   </body>
 </html>
